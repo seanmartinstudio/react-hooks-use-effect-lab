@@ -12,10 +12,17 @@ function Question({ question, onAnswered }) {
 
   const { id, prompt, answers, correctIndex } = question;
 
-  useEffect(() => {
-    setTimeout(() => setTimeRemaining((timeRemaining) => timeRemaining - 1), 1000);
-    
-  }, [timeRemaining]);
+useEffect(() => {
+let timeID = setTimeout(() => setTimeRemaining((timeRemaining) => timeRemaining - 1), 1000);
+    if(timeRemaining === 0) {
+      setTimeRemaining(10)
+      onAnswered(false)
+    }
+    return function cleanUp() {
+      clearTimeout(timeID);
+  };
+
+  }, [timeRemaining, onAnswered]);
 
 
 
